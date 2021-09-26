@@ -22,15 +22,27 @@ export default class SearchFormView extends View {
   }
 
   bindEvent() {
+    // eventListener 의 target 이 inputElement 이기 때문에 helpers 의 on 을 사용
     on(this.inputElement, 'keyup', () => this.handleKeyup());
+    // eventListener 의 target 이 객체의 this 와 동일하기 때문에 this.on 사용
+    this.on('submit', event => this.handleSubmit(event));
   }
 
   handleKeyup() {
-    console.log(tag, 'handleKeyup', this.inputElement.value);
     const { value } = this.inputElement;
     this.showResetButton(value.length > 0);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    console.log(tag, 'handleSubmit');
+    const { value } = this.inputElement;
+    this.emit('@submit', { value });
   }
 }
 
 // View 를 Controller 에 넣어주기 : Application 의 진입점
-// 검색어 입력 부분의 이벤트
+
+// SearchFormView
+// - 검색어 입력 부분의 이벤트
+// - 검색어 입력 폼을 담당
